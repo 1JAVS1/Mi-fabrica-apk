@@ -11,10 +11,9 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
+      - uses: gradle/actions/setup-gradle@v3
       - name: Compilar APK Maestra
-        run: |
-          chmod +x gradlew
-          ./gradlew assembleDebug
+        run: gradle assembleDebug
       - name: Subir APK a Releases
         uses: softprops/action-gh-release@v1
         with:
