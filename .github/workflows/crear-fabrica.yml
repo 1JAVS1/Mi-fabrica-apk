@@ -8,27 +8,18 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Crear Fabrica Maestra V12 FIX BUILD
+      - name: Crear V13 Ultra Simple
         run: |
-          rm -rf app build.gradle settings.gradle gradlew gradlew.bat gradle 2>/dev/null; true
+          rm -rf app build.gradle settings.gradle gradle 2>/dev/null; true
           mkdir -p app/src/main/java/com/fabrica/maestra
           mkdir -p gradle/wrapper
           cat > settings.gradle <<'EOF'
-          pluginManagement {
-            repositories { google(); mavenCentral(); gradlePluginPortal() }
-          }
-          dependencyResolutionManagement {
-            repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-            repositories { google(); mavenCentral() }
-          }
+          pluginManagement { repositories { google(); mavenCentral(); gradlePluginPortal() } }
+          dependencyResolutionManagement { repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS); repositories { google(); mavenCentral() } }
           include ':app'
           EOF
           cat > build.gradle <<'EOF'
-          plugins {
-            id 'com.android.application' version '8.2.2' apply false
-          }
+          plugins { id 'com.android.application' version '8.2.2' apply false }
           EOF
           cat > gradle/wrapper/gradle-wrapper.properties <<'EOF'
           distributionUrl=https\://services.gradle.org/distributions/gradle-8.5-bin.zip
@@ -39,57 +30,30 @@ jobs:
           android {
             namespace 'com.fabrica.maestra'
             compileSdk 34
-            defaultConfig {
-              applicationId "com.fabrica.maestra"
-              minSdk 24
-              targetSdk 34
-              versionCode 12
-              versionName "12.0"
-            }
-            compileOptions {
-              sourceCompatibility JavaVersion.VERSION_17
-              targetCompatibility JavaVersion.VERSION_17
-            }
+            defaultConfig { applicationId "com.fabrica.maestra"; minSdk 24; targetSdk 34; versionCode 13; versionName "13.0" }
+            compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
           }
-          dependencies {
-            implementation 'com.squareup.okhttp3:okhttp:4.12.0'
-          }
+          dependencies { }
           EOF
           cat > app/src/main/AndroidManifest.xml <<'EOF'
           <?xml version="1.0" encoding="utf-8"?>
           <manifest xmlns:android="http://schemas.android.com/apk/res/android">
-            <uses-permission android:name="android.permission.INTERNET"/>
-            <application android:label="Fabrica Maestra V12" android:theme="@android:style/Theme.Material.Light">
-              <activity android:name=".MainActivity" android:exported="true">
-                <intent-filter>
-                  <action android:name="android.intent.action.MAIN"/>
-                  <category android:name="android.intent.category.LAUNCHER"/>
-                </intent-filter>
-              </activity>
+            <application android:label="Fabrica V13" android:theme="@android:style/Theme.Material.Light">
+              <activity android:name=".MainActivity" android:exported="true"><intent-filter><action android:name="android.intent.action.MAIN"/><category android:name="android.intent.category.LAUNCHER"/></intent-filter></activity>
             </application>
           </manifest>
           EOF
           cat > app/src/main/java/com/fabrica/maestra/MainActivity.java <<'JAVA'
           package com.fabrica.maestra;
-          import android.app.Activity;
-          import android.os.Bundle;
-          import android.widget.*;
+          import android.app.Activity; import android.os.Bundle; import android.widget.*;
           public class MainActivity extends Activity {
-            @Override protected void onCreate(Bundle b){
-              super.onCreate(b);
-              LinearLayout lay=new LinearLayout(this); lay.setOrientation(LinearLayout.VERTICAL); lay.setPadding(30,30,30,30);
-              TextView t=new TextView(this); t.setText("FABRICA MAESTRA V12 OK"); t.setTextSize(22);
-              EditText e=new EditText(this); e.setHint("Token ghp_...");
-              lay.addView(t); lay.addView(e);
-              setContentView(lay);
-            }
+            protected void onCreate(Bundle b){ super.onCreate(b); TextView t=new TextView(this); t.setText("FABRICA V13 OK - COMPILA"); t.setTextSize(24); setContentView(t); }
           }
           JAVA
-      - name: Subir cambios
+      - name: Push
         run: |
-          git config user.name "fabrica"
-          git config user.email "fabrica@bot.com"
+          git config user.name "fabrica"; git config user.email "fabrica@bot.com"
           git branch -M main
           git add app build.gradle settings.gradle gradle/wrapper
-          git commit -m "Fabrica V12 fix build" || true
+          git commit -m "V13 ultra simple" || true
           git push origin HEAD:main -f
