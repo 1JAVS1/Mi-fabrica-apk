@@ -1,6 +1,4 @@
-plugins {
-  id 'com.android.application'
-}
+plugins { id 'com.android.application' }
 android {
   namespace 'com.fabrica.maestra'
   compileSdk 34
@@ -8,8 +6,8 @@ android {
     applicationId "com.fabrica.maestra"
     minSdk 24
     targetSdk 34
-    versionCode 1
-    versionName "1.0 Maestra"
+    versionCode 12
+    versionName "12.0"
   }
   compileOptions {
     sourceCompatibility JavaVersion.VERSION_17
