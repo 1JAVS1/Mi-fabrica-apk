@@ -1,3 +1,4 @@
+
 name: Crear Fabrica
 on: [workflow_dispatch]
 jobs:
@@ -7,49 +8,34 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
-      - name: Crear Fabrica Maestra
+        with:
+          fetch-depth: 0
+      - name: Crear Fabrica Maestra V12 FIX BUILD
         run: |
-          rm -rf app gradle build.gradle settings.gradle gradlew gradlew.bat 2>/dev/null; true
+          rm -rf app build.gradle settings.gradle gradlew gradlew.bat gradle 2>/dev/null; true
           mkdir -p app/src/main/java/com/fabrica/maestra
           mkdir -p gradle/wrapper
-          cat > settings.gradle <<'GR'
+          cat > settings.gradle <<'EOF'
           pluginManagement {
-            repositories {
-              google()
-              mavenCentral()
-              gradlePluginPortal()
-            }
+            repositories { google(); mavenCentral(); gradlePluginPortal() }
           }
           dependencyResolutionManagement {
             repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-            repositories {
-              google()
-              mavenCentral()
-            }
+            repositories { google(); mavenCentral() }
           }
           include ':app'
-          GR
-          cat > build.gradle <<'GR'
+          EOF
+          cat > build.gradle <<'EOF'
           plugins {
             id 'com.android.application' version '8.2.2' apply false
           }
-          task clean(type: Delete) {
-            delete rootProject.buildDir
-          }
-          GR
-          cat > gradle/wrapper/gradle-wrapper.properties <<'GR'
-          distributionBase=GRADLE_USER_HOME
-          distributionPath=wrapper/dists
+          EOF
+          cat > gradle/wrapper/gradle-wrapper.properties <<'EOF'
           distributionUrl=https\://services.gradle.org/distributions/gradle-8.5-bin.zip
           networkTimeout=10000
-          validateDistributionUrl=true
-          zipStoreBase=GRADLE_USER_HOME
-          zipStorePath=wrapper/dists
-          GR
-          cat > app/build.gradle <<'GR'
-          plugins {
-            id 'com.android.application'
-          }
+          EOF
+          cat > app/build.gradle <<'EOF'
+          plugins { id 'com.android.application' }
           android {
             namespace 'com.fabrica.maestra'
             compileSdk 34
@@ -57,8 +43,8 @@ jobs:
               applicationId "com.fabrica.maestra"
               minSdk 24
               targetSdk 34
-              versionCode 1
-              versionName "1.0 Maestra"
+              versionCode 12
+              versionName "12.0"
             }
             compileOptions {
               sourceCompatibility JavaVersion.VERSION_17
@@ -68,74 +54,34 @@ jobs:
           dependencies {
             implementation 'com.squareup.okhttp3:okhttp:4.12.0'
           }
-          GR
-          cat > app/src/main/AndroidManifest.xml <<'GR'
+          EOF
+          cat > app/src/main/AndroidManifest.xml <<'EOF'
           <?xml version="1.0" encoding="utf-8"?>
           <manifest xmlns:android="http://schemas.android.com/apk/res/android">
             <uses-permission android:name="android.permission.INTERNET"/>
-            <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-            <application android:label="Fabrica Maestra" android:allowBackup="true" android:theme="@android:style/Theme.Material.Light">
+            <application android:label="Fabrica Maestra V12" android:theme="@android:style/Theme.Material.Light">
               <activity android:name=".MainActivity" android:exported="true">
-                <intent-filter><action android:name="android.intent.action.MAIN"/><category android:name="android.intent.category.LAUNCHER"/></intent-filter>
+                <intent-filter>
+                  <action android:name="android.intent.action.MAIN"/>
+                  <category android:name="android.intent.category.LAUNCHER"/>
+                </intent-filter>
               </activity>
             </application>
           </manifest>
-          GR
+          EOF
           cat > app/src/main/java/com/fabrica/maestra/MainActivity.java <<'JAVA'
           package com.fabrica.maestra;
           import android.app.Activity;
-          import android.content.Intent;
-          import android.net.Uri;
           import android.os.Bundle;
-          import android.util.Base64;
           import android.widget.*;
-          import java.io.*;
-          import java.util.concurrent.Executors;
-          import okhttp3.*;
           public class MainActivity extends Activity {
-            EditText edtToken, edtRepo; TextView txtFile, txtLog; Button btnPick, btnCrear; Uri zipUri=null;
-            OkHttpClient client=new OkHttpClient(); String owner="";
-            final String WORKFLOW_YML="name: Compilar APK\non: [workflow_dispatch]\njobs:\n  build:\n    runs-on: ubuntu-latest\n    permissions:\n      contents: write\n    steps:\n      - uses: actions/checkout@v4\n      - uses: actions/setup-java@v4\n        with:\n          distribution: 'temurin'\n          java-version: '17'\n      - uses: gradle/actions/setup-gradle@v3\n      - name: Build APK\n        run: gradle assembleDebug\n      - name: Release\n        uses: softprops/action-gh-release@v1\n        with:\n          tag_name: v${{ github.run_number }}\n          files: app/build/outputs/apk/debug/app-debug.apk\n        env:\n          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}\n";
-            @Override protected void onCreate(Bundle b){ super.onCreate(b);
+            @Override protected void onCreate(Bundle b){
+              super.onCreate(b);
               LinearLayout lay=new LinearLayout(this); lay.setOrientation(LinearLayout.VERTICAL); lay.setPadding(30,30,30,30);
-              TextView t=new TextView(this); t.setText("FABRICA MAESTRA"); t.setTextSize(22);
-              edtToken=new EditText(this); edtToken.setHint("Token ghp_...");
-              edtRepo=new EditText(this); edtRepo.setHint("Repo"); edtRepo.setText("Mi-fabrica-apk");
-              btnPick=new Button(this); btnPick.setText("1. ZIP");
-              txtFile=new TextView(this); txtFile.setText("Sin archivo");
-              btnCrear=new Button(this); btnCrear.setText("2. CREAR APK");
-              txtLog=new TextView(this); txtLog.setText("Log:\n");
-              lay.addView(t); lay.addView(edtToken); lay.addView(edtRepo); lay.addView(btnPick); lay.addView(txtFile); lay.addView(btnCrear); lay.addView(txtLog);
+              TextView t=new TextView(this); t.setText("FABRICA MAESTRA V12 OK"); t.setTextSize(22);
+              EditText e=new EditText(this); e.setHint("Token ghp_...");
+              lay.addView(t); lay.addView(e);
               setContentView(lay);
-              btnPick.setOnClickListener(v->{ Intent i=new Intent(Intent.ACTION_GET_CONTENT); i.setType("*/*"); startActivityForResult(i,100); });
-              btnCrear.setOnClickListener(v-> crearApk());
-            }
-            @Override protected void onActivityResult(int req,int res,Intent data){ super.onActivityResult(req,res,data); if(req==100 && res==RESULT_OK && data!=null){ zipUri=data.getData(); txtFile.setText("Archivo: "+zipUri.getLastPathSegment()); log("ZIP ok"); } }
-            void log(String s){ runOnUiThread(()-> txtLog.append("\n"+s)); }
-            void crearApk(){
-              String token=edtToken.getText().toString().trim(); String repo=edtRepo.getText().toString().trim();
-              if(token.isEmpty()||zipUri==null){ log("Falta token o zip"); return; }
-              if(repo.isEmpty()) repo="Mi-fabrica-apk"; String finalRepo=repo;
-              Executors.newSingleThreadExecutor().execute(()->{ try{
-                log("Verificando..."); Request rqUser=new Request.Builder().url("https://api.github.com/user").header("Authorization","Bearer "+token).build();
-                Response rsUser=client.newCall(rqUser).execute(); String bodyUser=rsUser.body().string(); owner=bodyUser.split("\"login\":\"")[1].split("\"")[0];
-                log("Usuario: "+owner);
-                String wfPath=".github/workflows/compilar.yml"; String wfB64=Base64.encodeToString(WORKFLOW_YML.getBytes(),Base64.NO_WRAP);
-                String sha=null; Request rqGet=new Request.Builder().url("https://api.github.com/repos/"+owner+"/"+finalRepo+"/contents/"+wfPath).header("Authorization","Bearer "+token).build();
-                Response rsGet=client.newCall(rqGet).execute(); if(rsGet.isSuccessful()){ String b=rsGet.body().string(); if(b.contains("\"sha\"")) sha=b.split("\"sha\":\"")[1].split("\"")[0]; }
-                String jsonWf="{\"message\":\"fabrica\",\"content\":\""+wfB64+"\""+(sha!=null?",\"sha\":\""+sha+"\"":"")+"}";
-                Request rqPutWf=new Request.Builder().url("https://api.github.com/repos/"+owner+"/"+finalRepo+"/contents/"+wfPath).header("Authorization","Bearer "+token).put(RequestBody.create(jsonWf,MediaType.parse("application/json"))).build();
-                client.newCall(rqPutWf).execute();
-                InputStream is=getContentResolver().openInputStream(zipUri); ByteArrayOutputStream baos=new ByteArrayOutputStream(); byte[] buf=new byte[8192]; int n; while((n=is.read(buf))!=-1) baos.write(buf,0,n);
-                String zipB64=Base64.encodeToString(baos.toByteArray(),Base64.NO_WRAP); String zipPath="project.zip"; String shaZip=null;
-                Request rqGetZip=new Request.Builder().url("https://api.github.com/repos/"+owner+"/"+finalRepo+"/contents/"+zipPath).header("Authorization","Bearer "+token).build();
-                Response rsGetZip=client.newCall(rqGetZip).execute(); if(rsGetZip.isSuccessful()){ String bz=rsGetZip.body().string(); if(bz.contains("\"sha\"")) shaZip=bz.split("\"sha\":\"")[1].split("\"")[0]; }
-                String jsonZip="{\"message\":\"zip\",\"content\":\""+zipB64+"\""+(shaZip!=null?",\"sha\":\""+shaZip+"\"":"")+"}";
-                Request rqPutZip=new Request.Builder().url("https://api.github.com/repos/"+owner+"/"+finalRepo+"/contents/"+zipPath).header("Authorization","Bearer "+token).put(RequestBody.create(jsonZip,MediaType.parse("application/json"))).build();
-                client.newCall(rqPutZip).execute();
-                String jsonDisp="{\"ref\":\"main\"}"; Request rqDisp=new Request.Builder().url("https://api.github.com/repos/"+owner+"/"+finalRepo+"/actions/workflows/compilar.yml/dispatches").header("Authorization","Bearer "+token).post(RequestBody.create(jsonDisp,MediaType.parse("application/json"))).build();
-                client.newCall(rqDisp).execute(); log("Listo! Ve a Releases en 3 min");
-              }catch(Exception e){ log("Error: "+e.getMessage()); } });
             }
           }
           JAVA
@@ -144,6 +90,6 @@ jobs:
           git config user.name "fabrica"
           git config user.email "fabrica@bot.com"
           git branch -M main
-          git add app build.gradle settings.gradle gradle/wrapper/gradle-wrapper.properties || true
-          git commit -m "Fabrica V10 Fix Build" || true
+          git add app build.gradle settings.gradle gradle/wrapper
+          git commit -m "Fabrica V12 fix build" || true
           git push origin HEAD:main -f
