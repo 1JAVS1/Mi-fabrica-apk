@@ -7,12 +7,13 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
-      - name: Crear SENE FINAL V15
+      - name: Crear SENE V16 FIX YAML
         run: |
           rm -rf app build.gradle settings.gradle gradle 2>/dev/null; true
           mkdir -p app/src/main/java/com/sene/fabrica
           mkdir -p app/src/main/res/mipmap-xxxhdpi app/src/main/res/mipmap-xxhdpi app/src/main/res/mipmap-xhdpi app/src/main/res/mipmap-hdpi app/src/main/res/mipmap-mdpi
           mkdir -p gradle/wrapper
+          echo "Icon..."
           rm -f /tmp/icon.b64 /tmp/icon.png
           echo -n "iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAABNkklEQVR42u2dd3wcxdnHf8/M7t6dinvBvXeDMXKVJZ0kS7IwnbwnQiihhd4SIHSfzpTQCSFA6L3pbEwzHctnGzAQ0S0gVIMb7rbK3e3uzPP+cRIYMGCDDQbmm48+xLrb29PszNPmeZ4BDAaDwWAwGAwGg8FgMBgMBoPBYDAYDAaDwWAwGAwGg8FgMBgMBoPBYDAYDAaDwWAwGAwGg8FgMBgMBoPBYDAYDAaDwWAwGAwGg8FgMBgMBoPBYDAYDAaDwWAwGAwGg8FgMBgMBoPBYDAYDAaDwWAwGAwGg8FgMBgMBoPBYDAYDAaDwWAwGAwGg8FgMBgMBoPBYDAYDAaDwWAwGAwGg8FgMBgMBoPBYDAYDAaDwWAwGAwGg8FgMBgMBoPBYDAYDAaDwWAwGAwGg8FgMBgMBoPBYDAYDAaDwWAwGAwGwy8NIyoYUWFGYkd7LqCaSEQCIDMahp9lwplR2GEwz8LwMyx4Ai6aUDz9ovGll4OAKGAsgV+Y1mew336F3aYVFp8w8JrKgBEKP4yZuFtBJBKRBPBZhUUTB60LnD9qbej0cwpKD4sBusXsNPxCmn8EIpQXzcsq/sCJT9jQ/t+HPZg8HACi4bB5LkYAbCMB0PLf3AZ0szxC0vO9ASvx76P2mjSiKh5XURMT+GW0fzgsqxBXVQ/nXtG3OTgpnfR0x0YxGgCQMONjBMA2oioe1wzQ7NH+s0tD6XpJbLd1ZfaQT+V/+kTDwRGoJ2Ny/vxWWSyR8P9eVFTVu9E51tO+3yB8tSQHMwGgPtKFzSgZtp22iWa0/BF7F42+ZWhJ6oE+pd7MQVP4itHhK1q0kWVG6Wd1yXD81PCudw0rb5rR" >> /tmp/icon.b64
           echo -n "t8Kf1X8KX7Rb0TQgs1NjRsmwzWn1908vKPjbrEEVPKNPhXvH0DJ9anlh6aavG7av389gwhOVgetHlb0yc9BUnjVwKl+zc/HzYMgamK1A4wJsR1egJhKRV8xfcPV77bwH2BF2TlroYcsCdx63R0H/SDyuWy0Fw3YTwoKYcNX57vU7pZyxpH21PpBa9kx+6lAiqEXROAMw5r8RANsFXjQ8zkxAYoJ38oos/2MFEh3TTs9hnznXkwCPiJl4wHZzw8JhqyoeVxdMCh81oCF4BFLKY4vkpx39v86+ceHSByMRGYtBm5Ey/CyuwN/LiqfcN7QiVdNnihsfMIWnjZ14pnEFttPib7GsDo6EB94xZMqqh3tW+o/0qeCLxhRNA5kxN/wC2ggApo2fdMrM/uV8X+8y784Bpfq4wsJ8AIjATMhtNtaAIAB7HTm+63UjJy+a2beSH+tTyf8cWfwIBMBmrI0L8HMTSyRUDSJy+sIX/vW/Nu7zAUFWUFs8fI1z07iTKtvUYDgbV2CbQCMiEeJaWOV1uXf0SAeHA1qtDHjrXhqQPIU1RHV0uPH5jQD4+eMB8QhABF7aRZ+zIag8aOjurjNi/wXJ64liugYRM84/3dKSVfG4Ou+ckkN7NTuVrue6rgTe3sk79sFHXv60KhKhWCxm/H7DLyQFWnzTsyYWHH7/gHJ+oG+5++CQCj5vUskRJh7wU03/zNieMjW8651DK1bF+05xZw3YnavHhmObumGGrcdMym3nCnANIvKUJU+9tmv/Hl26ufYE8tjP8rmibbj7I+fNeOqLaDQqEomEMVO3RrACtApdxMpo5+ySl+0nuzRbfVhCLgt4dQ+VJo+8auFEPnHxE0bzGxfgl6cKcV2DiDz/TO/0pUH/PSHIauda2WM+cO7s" >> /tmp/icon.b64
@@ -55,89 +56,53 @@ jobs:
           cp /tmp/icon.png app/src/main/res/mipmap-xhdpi/ic_launcher_round.png
           cp /tmp/icon.png app/src/main/res/mipmap-hdpi/ic_launcher_round.png
           cp /tmp/icon.png app/src/main/res/mipmap-mdpi/ic_launcher_round.png
-          cat > settings.gradle <<'EOF'
-          pluginManagement { repositories { google(); mavenCentral(); gradlePluginPortal() } }
-          dependencyResolutionManagement { repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS); repositories { google(); mavenCentral() } }
-          include ':app'
-          EOF
-          cat > build.gradle <<'EOF'
-          plugins { id 'com.android.application' version '8.2.2' apply false }
-          EOF
-          cat > gradle/wrapper/gradle-wrapper.properties <<'EOF'
-          distributionUrl=https\://services.gradle.org/distributions/gradle-8.5-bin.zip
-          EOF
-          cat > app/build.gradle <<'EOF'
-          plugins { id 'com.android.application' }
-          android { namespace 'com.sene.fabrica'; compileSdk 34; defaultConfig { applicationId "com.sene.fabrica"; minSdk 24; targetSdk 34; versionCode 15; versionName "15.0 SENE" } compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 } }
-          dependencies { implementation 'com.squareup.okhttp3:okhttp:4.12.0' }
-          EOF
-          cat > app/src/main/AndroidManifest.xml <<'EOF'
-          <?xml version="1.0" encoding="utf-8"?>
-          <manifest xmlns:android="http://schemas.android.com/apk/res/android">
-            <uses-permission android:name="android.permission.INTERNET"/>
-            <application android:icon="@mipmap/ic_launcher" android:roundIcon="@mipmap/ic_launcher_round" android:label="SENE Fabrica" android:theme="@android:style/Theme.Material.Light.NoActionBar">
-              <activity android:name=".MainActivity" android:exported="true"><intent-filter><action android:name="android.intent.action.MAIN"/><category android:name="android.intent.category.LAUNCHER"/></intent-filter></activity>
-            </application>
-          </manifest>
-          EOF
-          cat > app/src/main/java/com/sene/fabrica/MainActivity.java <<'JAVA'
-
-package com.sene.fabrica;
-import android.app.Activity;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Bundle;
-import android.widget.*;
-import android.util.Base64;
-import java.io.*;
-import okhttp3.*;
-public class MainActivity extends Activity {
-  EditText etToken, etRepoName;
-  TextView tvLog;
-  Uri zipUri=null;
-  OkHttpClient client=new OkHttpClient();
-  @Override protected void onCreate(Bundle b){
-    super.onCreate(b);
-    LinearLayout root=new LinearLayout(this); root.setOrientation(LinearLayout.VERTICAL); root.setPadding(40,40,40,40);
-    TextView title=new TextView(this); title.setText("SENE - Fabrica Maestra"); title.setTextSize(22);
-    title.setTextColor(0xFFA0233D);
-    TextView sub=new TextView(this); sub.setText("Soluciones en Electronica");
-    etToken=new EditText(this); etToken.setHint("Token ghp_...");
-    etRepoName=new EditText(this); etRepoName.setHint("Nombre proyecto ej: mi-app-sene");
-    Button btnPick=new Button(this); btnPick.setText("1. Seleccionar ZIP");
-    Button btnBuild=new Button(this); btnBuild.setText("2. CREAR Y COMPILAR APK SENE"); btnBuild.setBackgroundColor(0xFFA0233D); btnBuild.setTextColor(0xFFFFFFFF);
-    tvLog=new TextView(this); tvLog.setText("Log:\nListo.");
-    ScrollView sv=new ScrollView(this); sv.addView(tvLog);
-    root.addView(title); root.addView(sub); root.addView(etToken); root.addView(etRepoName); root.addView(btnPick); root.addView(btnBuild); root.addView(sv);
-    setContentView(root);
-    btnPick.setOnClickListener(v->{ Intent i=new Intent(Intent.ACTION_GET_CONTENT); i.setType("application/zip"); startActivityForResult(i,1001); });
-    btnBuild.setOnClickListener(v->{ if(zipUri==null){ log("Selecciona ZIP"); return; } String t=etToken.getText().toString().trim(); String r=etRepoName.getText().toString().trim(); if(t.isEmpty()||r.isEmpty()){ log("Falta token/repo"); return; } new Thread(()->{ try{ crear(t,"1JAVS1",r); }catch(Exception e){ log("Error: "+e.getMessage()); } }).start(); });
-  }
-  void log(String s){ runOnUiThread(()-> tvLog.append("\n"+s)); }
-  @Override protected void onActivityResult(int rc,int res,Intent data){ super.onActivityResult(rc,res,data); if(rc==1001&&data!=null){ zipUri=data.getData(); log("ZIP: "+zipUri); } }
-  void crear(String token,String owner,String repo) throws Exception {
-    log("Creando repo "+repo);
-    String json="{\"name\":\""+repo+"\",\"private\":false}"; Request req=new Request.Builder().url("https://api.github.com/user/repos").header("Authorization","Bearer "+token).post(RequestBody.create(json,MediaType.parse("application/json"))).build(); Response r=client.newCall(req).execute(); log("Repo: "+r.code());
-    InputStream is=getContentResolver().openInputStream(zipUri); ByteArrayOutputStream baos=new ByteArrayOutputStream(); byte[] buf=new byte[8192]; int n; while((n=is.read(buf))!=-1) baos.write(buf,0,n); String b64=Base64.encodeToString(baos.toByteArray(), Base64.NO_WRAP);
-    putFile(token,owner,repo,"project.zip.b64",b64,"ZIP SENE");
-    String wf="name: Compilar APK SENE\non: [workflow_dispatch]\njobs:\n  build:\n    runs-on: ubuntu-latest\n    permissions:\n      contents: write\n    steps:\n      - uses: actions/checkout@v4\n      - uses: actions/setup-java@v4\n        with:\n          distribution: 'temurin'\n          java-version: '17'\n      - uses: gradle/actions/setup-gradle@v3\n        with:\n          gradle-version: 8.5\n      - name: Preparar\n        run: |\n          base64 -d project.zip.b64 > project.zip\n          unzip -o project.zip -d .\n          rm project.zip.b64 project.zip\n      - name: Compilar\n        run: gradle assembleDebug --stacktrace\n      - name: Release\n        uses: softprops/action-gh-release@v1\n        with:\n          tag_name: sene-v${{ github.run_number }}\n          files: app/build/outputs/apk/debug/app-debug.apk\n        env:\n          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}\n";
-    putFile(token,owner,repo,".github/workflows/compilar.yml",Base64.encodeToString(wf.getBytes(), Base64.NO_WRAP),"Workflow SENE");
-    Request disp=new Request.Builder().url("https://api.github.com/repos/"+owner+"/"+repo+"/actions/workflows/compilar.yml/dispatches").header("Authorization","Bearer "+token).post(RequestBody.create("{\"ref\":\"main\"}",MediaType.parse("application/json"))).build(); client.newCall(disp).execute();
-    log("Compilacion iniciada https://github.com/"+owner+"/"+repo+"/actions");
-  }
-  void putFile(String token,String owner,String repo,String path,String b64,String msg) throws Exception {
-    String url="https://api.github.com/repos/"+owner+"/"+repo+"/contents/"+path;
-    Request get=new Request.Builder().url(url).header("Authorization","Bearer "+token).get().build(); Response rg=client.newCall(get).execute(); String sha=null; if(rg.isSuccessful()){ String body=rg.body().string(); int i=body.indexOf("\"sha\":\""); if(i!=-1){ int s=i+7; int e=body.indexOf("\"",s); sha=body.substring(s,e); } }
-    String json="{"+(sha!=null?"\"sha\":\""+sha+"\",":"")+"\"message\":\""+msg+"\",\"content\":\""+b64+"\",\"branch\":\"main\"}";
-    Request put=new Request.Builder().url(url).header("Authorization","Bearer "+token).put(RequestBody.create(json,MediaType.parse("application/json"))).build(); Response rp=client.newCall(put).execute(); log(path+" -> "+rp.code());
-  }
-}
-
-          JAVA
-      - name: Push SENE FINAL
+          echo "Creating settings.gradle"
+          mkdir -p $(dirname settings.gradle)
+          rm -f /tmp/f.b64
+          echo -n "cGx1Z2luTWFuYWdlbWVudCB7IHJlcG9zaXRvcmllcyB7IGdvb2dsZSgpOyBtYXZlbkNlbnRyYWwoKTsgZ3JhZGxlUGx1Z2luUG9ydGFsKCkgfSB9CmRlcGVuZGVuY3lSZXNvbHV0aW9uTWFuYWdlbWVudCB7IHJlcG9zaXRvcmllc01vZGUuc2V0KFJlcG9zaXRvcmllc01vZGUuRkFJTF9PTl9QUk9KRUNUX1JFUE9TKTsgcmVwb3NpdG9yaWVzIHsgZ29vZ2xlKCk7IG1hdmVuQ2VudHJhbCgpIH0gfQppbmNsdWRlICc6YXBwJwo=" >> /tmp/f.b64
+          base64 -d /tmp/f.b64 > settings.gradle
+          rm /tmp/f.b64
+          echo "Creating build.gradle"
+          mkdir -p $(dirname build.gradle)
+          rm -f /tmp/f.b64
+          echo -n "cGx1Z2lucyB7IGlkICdjb20uYW5kcm9pZC5hcHBsaWNhdGlvbicgdmVyc2lvbiAnOC4yLjInIGFwcGx5IGZhbHNlIH0K" >> /tmp/f.b64
+          base64 -d /tmp/f.b64 > build.gradle
+          rm /tmp/f.b64
+          echo "Creating gradle/wrapper/gradle-wrapper.properties"
+          mkdir -p $(dirname gradle/wrapper/gradle-wrapper.properties)
+          rm -f /tmp/f.b64
+          echo -n "ZGlzdHJpYnV0aW9uVXJsPWh0dHBzXDovL3NlcnZpY2VzLmdyYWRsZS5vcmcvZGlzdHJpYnV0aW9ucy9ncmFkbGUtOC41LWJpbi56aXAK" >> /tmp/f.b64
+          base64 -d /tmp/f.b64 > gradle/wrapper/gradle-wrapper.properties
+          rm /tmp/f.b64
+          echo "Creating app/build.gradle"
+          mkdir -p $(dirname app/build.gradle)
+          rm -f /tmp/f.b64
+          echo -n "cGx1Z2lucyB7IGlkICdjb20uYW5kcm9pZC5hcHBsaWNhdGlvbicgfQphbmRyb2lkIHsgbmFtZXNwYWNlICdjb20uc2VuZS5mYWJyaWNhJzsgY29tcGlsZVNkayAzNDsgZGVmYXVsdENvbmZpZyB7IGFwcGxpY2F0aW9uSWQgImNvbS5zZW5lLmZhYnJpY2EiOyBtaW5TZGsgMjQ7IHRhcmdldFNkayAzNDsgdmVyc2lvbkNvZGUgMTY7IHZlcnNpb25OYW1lICIxNi4wIFNFTkUgRklYIiB9IGNvbXBpbGVPcHRpb25zIHsgc291cmNlQ29tcGF0aWJpbGl0eSBKYXZhVmVyc2lvbi5WRVJTSU9OXzE3OyB0YXJnZXRDb21wYXRpYmlsaXR5IEphdmFWZXJzaW9uLlZFUlNJT05fMTcgfSB9CmRlcGVuZGVuY2llcyB7IGltcGxlbWVudGF0aW9uICdjb20uc3F1YXJldXAub2todHRwMzpva2h0dHA6NC4xMi4wJyB9Cg==" >> /tmp/f.b64
+          base64 -d /tmp/f.b64 > app/build.gradle
+          rm /tmp/f.b64
+          echo "Creating app/src/main/AndroidManifest.xml"
+          mkdir -p $(dirname app/src/main/AndroidManifest.xml)
+          rm -f /tmp/f.b64
+          echo -n "PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPG1hbmlmZXN0IHhtbG5zOmFuZHJvaWQ9Imh0dHA6Ly9zY2hlbWFzLmFuZHJvaWQuY29tL2Fway9yZXMvYW5kcm9pZCI+CiAgPHVzZXMtcGVybWlzc2lvbiBhbmRyb2lkOm5hbWU9ImFuZHJvaWQucGVybWlzc2lvbi5JTlRFUk5FVCIvPgogIDxhcHBsaWNhdGlvbiBhbmRyb2lkOmljb249IkBtaXBtYXAvaWNfbGF1bmNoZXIiIGFuZHJvaWQ6cm91bmRJY29uPSJAbWlwbWFwL2ljX2xhdW5jaGVyX3JvdW5kIiBhbmRyb2lkOmxhYmVsPSJTRU5FIEZhYnJpY2EiIGFuZHJvaWQ6dGhlbWU9IkBhbmRyb2lkOnN0eWxlL1RoZW1lLk1hdGVyaWFsLkxpZ2h0Lk5vQWN0aW9uQmFyIj4KICAgIDxhY3Rpdml0eSBhbmRyb2lkOm5hbWU9Ii5NYWluQWN0aXZpdHkiIGFuZHJvaWQ6ZXhwb3J0ZWQ9InRydWUiPjxpbnRlbnQtZmlsdGVyPjxhY3Rpb24gYW5kcm9pZDpuYW1lPSJhbmRyb2lkLmludGVudC5hY3Rpb24uTUFJTiIvPjxjYXRlZ29yeSBhbmRyb2lkOm5hbWU9ImFuZHJvaWQuaW50ZW50LmNhdGVnb3J5LkxBVU5DSEVSIi8+PC9pbnRlbnQtZmlsdGVyPjwvYWN0aXZpdHk+CiAgPC9hcHBsaWNhdGlvbj4KPC9tYW5pZmVzdD4K" >> /tmp/f.b64
+          base64 -d /tmp/f.b64 > app/src/main/AndroidManifest.xml
+          rm /tmp/f.b64
+          echo "Creating app/src/main/java/com/sene/fabrica/MainActivity.java"
+          mkdir -p $(dirname app/src/main/java/com/sene/fabrica/MainActivity.java)
+          rm -f /tmp/f.b64
+          echo -n "CnBhY2thZ2UgY29tLnNlbmUuZmFicmljYTsKaW1wb3J0IGFuZHJvaWQuYXBwLkFjdGl2aXR5OwppbXBvcnQgYW5kcm9pZC5jb250ZW50LkludGVudDsKaW1wb3J0IGFuZHJvaWQubmV0LlVyaTsKaW1wb3J0IGFuZHJvaWQub3MuQnVuZGxlOwppbXBvcnQgYW5kcm9pZC53aWRnZXQuKjsKaW1wb3J0IGFuZHJvaWQudXRpbC5CYXNlNjQ7CmltcG9ydCBqYXZhLmlvLio7CmltcG9ydCBva2h0dHAzLio7CnB1YmxpYyBjbGFzcyBNYWluQWN0aXZpdHkgZXh0ZW5kcyBBY3Rpdml0eSB7CiAgRWRpdFRleHQgZXRUb2tlbiwgZXRSZXBvTmFtZTsKICBUZXh0VmlldyB0dkxvZzsKICBVcmkgemlwVXJpPW51bGw7CiAgT2tIdHRwQ2xpZW50IGNsaWVudD1uZXcgT2tIdHRwQ2xpZW50KCk7CiAgQE92ZXJyaWRlIHByb3RlY3RlZCB2b2lkIG9uQ3JlYXRlKEJ1bmRsZSBiKXsKICAgIHN1cGVyLm9uQ3JlYXRlKGIpOwogICAgTGluZWFyTGF5b3V0IHJvb3Q9bmV3IExpbmVhckxheW91dCh0aGlzKTsgcm9vdC5zZXRPcmllbnRhdGlvbihMaW5lYXJMYXlvdXQuVkVSVElDQUwpOyByb290LnNldFBhZGRpbmcoNDAsNDAsNDAsNDApOwogICAgVGV4dFZpZXcgdGl0bGU9bmV3IFRleHRWaWV3KHRoaXMpOyB0aXRsZS5zZXRUZXh0KCJTRU5FIC0gRmFicmljYSBNYWVzdHJhIik7IHRpdGxlLnNldFRleHRTaXplKDIyKTsg" >> /tmp/f.b64
+          echo -n "dGl0bGUuc2V0VGV4dENvbG9yKDB4RkZBMDIzM0QpOwogICAgVGV4dFZpZXcgc3ViPW5ldyBUZXh0Vmlldyh0aGlzKTsgc3ViLnNldFRleHQoIlNvbHVjaW9uZXMgZW4gRWxlY3Ryb25pY2EiKTsKICAgIGV0VG9rZW49bmV3IEVkaXRUZXh0KHRoaXMpOyBldFRva2VuLnNldEhpbnQoIlRva2VuIGdocF8uLi4iKTsKICAgIGV0UmVwb05hbWU9bmV3IEVkaXRUZXh0KHRoaXMpOyBldFJlcG9OYW1lLnNldEhpbnQoIk5vbWJyZSBwcm95ZWN0byIpOwogICAgQnV0dG9uIGJ0blBpY2s9bmV3IEJ1dHRvbih0aGlzKTsgYnRuUGljay5zZXRUZXh0KCIxLiBTZWxlY2Npb25hciBaSVAiKTsKICAgIEJ1dHRvbiBidG5CdWlsZD1uZXcgQnV0dG9uKHRoaXMpOyBidG5CdWlsZC5zZXRUZXh0KCIyLiBDUkVBUiBZIENPTVBJTEFSIEFQSyIpOyBidG5CdWlsZC5zZXRCYWNrZ3JvdW5kQ29sb3IoMHhGRkEwMjMzRCk7IGJ0bkJ1aWxkLnNldFRleHRDb2xvcigweEZGRkZGRkZGKTsKICAgIHR2TG9nPW5ldyBUZXh0Vmlldyh0aGlzKTsgdHZMb2cuc2V0VGV4dCgiTG9nOlxuTGlzdG8uIik7CiAgICBTY3JvbGxWaWV3IHN2PW5ldyBTY3JvbGxWaWV3KHRoaXMpOyBzdi5hZGRWaWV3KHR2TG9nKTsKICAgIHJvb3QuYWRkVmlldyh0aXRsZSk7IHJvb3QuYWRkVmlldyhzdWIpOyByb290LmFkZFZpZXcoZXRUb2tlbik7IHJv" >> /tmp/f.b64
+          echo -n "b3QuYWRkVmlldyhldFJlcG9OYW1lKTsgcm9vdC5hZGRWaWV3KGJ0blBpY2spOyByb290LmFkZFZpZXcoYnRuQnVpbGQpOyByb290LmFkZFZpZXcoc3YpOwogICAgc2V0Q29udGVudFZpZXcocm9vdCk7CiAgICBidG5QaWNrLnNldE9uQ2xpY2tMaXN0ZW5lcih2LT57IEludGVudCBpPW5ldyBJbnRlbnQoSW50ZW50LkFDVElPTl9HRVRfQ09OVEVOVCk7IGkuc2V0VHlwZSgiYXBwbGljYXRpb24vemlwIik7IHN0YXJ0QWN0aXZpdHlGb3JSZXN1bHQoaSwxMDAxKTsgfSk7CiAgICBidG5CdWlsZC5zZXRPbkNsaWNrTGlzdGVuZXIodi0+eyBpZih6aXBVcmk9PW51bGwpeyBsb2coIlNlbGVjY2lvbmEgWklQIik7IHJldHVybjsgfSBTdHJpbmcgdD1ldFRva2VuLmdldFRleHQoKS50b1N0cmluZygpLnRyaW0oKTsgU3RyaW5nIHI9ZXRSZXBvTmFtZS5nZXRUZXh0KCkudG9TdHJpbmcoKS50cmltKCk7IGlmKHQuaXNFbXB0eSgpfHxyLmlzRW1wdHkoKSl7IGxvZygiRmFsdGEgdG9rZW4vcmVwbyIpOyByZXR1cm47IH0gbmV3IFRocmVhZCgoKS0+eyB0cnl7IGNyZWFyKHQsIjFKQVZTMSIscik7IH1jYXRjaChFeGNlcHRpb24gZSl7IGxvZygiRXJyb3I6ICIrZS5nZXRNZXNzYWdlKCkpOyB9IH0pLnN0YXJ0KCk7IH0pOwogIH0KICB2b2lkIGxvZyhTdHJpbmcgcyl7IHJ1bk9uVWlUaHJlYWQoKCktPiB0dkxv" >> /tmp/f.b64
+          echo -n "Zy5hcHBlbmQoIlxuIitzKSk7IH0KICBAT3ZlcnJpZGUgcHJvdGVjdGVkIHZvaWQgb25BY3Rpdml0eVJlc3VsdChpbnQgcmMsaW50IHJlcyxJbnRlbnQgZGF0YSl7IHN1cGVyLm9uQWN0aXZpdHlSZXN1bHQocmMscmVzLGRhdGEpOyBpZihyYz09MTAwMSYmZGF0YSE9bnVsbCl7IHppcFVyaT1kYXRhLmdldERhdGEoKTsgbG9nKCJaSVA6ICIremlwVXJpKTsgfSB9CiAgdm9pZCBjcmVhcihTdHJpbmcgdG9rZW4sU3RyaW5nIG93bmVyLFN0cmluZyByZXBvKSB0aHJvd3MgRXhjZXB0aW9uIHsKICAgIGxvZygiQ3JlYW5kbyByZXBvICIrcmVwbyk7CiAgICBTdHJpbmcganNvbj0ie1wibmFtZVwiOlwiIityZXBvKyJcIixcInByaXZhdGVcIjpmYWxzZX0iOyBSZXF1ZXN0IHJlcT1uZXcgUmVxdWVzdC5CdWlsZGVyKCkudXJsKCJodHRwczovL2FwaS5naXRodWIuY29tL3VzZXIvcmVwb3MiKS5oZWFkZXIoIkF1dGhvcml6YXRpb24iLCJCZWFyZXIgIit0b2tlbikucG9zdChSZXF1ZXN0Qm9keS5jcmVhdGUoanNvbixNZWRpYVR5cGUucGFyc2UoImFwcGxpY2F0aW9uL2pzb24iKSkpLmJ1aWxkKCk7IFJlc3BvbnNlIHI9Y2xpZW50Lm5ld0NhbGwocmVxKS5leGVjdXRlKCk7IGxvZygiUmVwbzogIityLmNvZGUoKSk7CiAgICBJbnB1dFN0cmVhbSBpcz1nZXRDb250ZW50UmVzb2x2ZXIoKS5vcGVuSW5wdXRT" >> /tmp/f.b64
+          echo -n "dHJlYW0oemlwVXJpKTsgQnl0ZUFycmF5T3V0cHV0U3RyZWFtIGJhb3M9bmV3IEJ5dGVBcnJheU91dHB1dFN0cmVhbSgpOyBieXRlW10gYnVmPW5ldyBieXRlWzgxOTJdOyBpbnQgbjsgd2hpbGUoKG49aXMucmVhZChidWYpKSE9LTEpIGJhb3Mud3JpdGUoYnVmLDAsbik7IFN0cmluZyBiNjQ9QmFzZTY0LmVuY29kZVRvU3RyaW5nKGJhb3MudG9CeXRlQXJyYXkoKSwgQmFzZTY0Lk5PX1dSQVApOwogICAgcHV0RmlsZSh0b2tlbixvd25lcixyZXBvLCJwcm9qZWN0LnppcC5iNjQiLGI2NCwiWklQIFNFTkUiKTsKICAgIFN0cmluZyB3Zj0ibmFtZTogQ29tcGlsYXIgQVBLIFNFTkVcbm9uOiBbd29ya2Zsb3dfZGlzcGF0Y2hdXG5qb2JzOlxuICBidWlsZDpcbiAgICBydW5zLW9uOiB1YnVudHUtbGF0ZXN0XG4gICAgcGVybWlzc2lvbnM6XG4gICAgICBjb250ZW50czogd3JpdGVcbiAgICBzdGVwczpcbiAgICAgIC0gdXNlczogYWN0aW9ucy9jaGVja291dEB2NFxuICAgICAgLSB1c2VzOiBhY3Rpb25zL3NldHVwLWphdmFAdjRcbiAgICAgICAgd2l0aDpcbiAgICAgICAgICBkaXN0cmlidXRpb246ICd0ZW11cmluJ1xuICAgICAgICAgIGphdmEtdmVyc2lvbjogJzE3J1xuICAgICAgLSB1c2VzOiBncmFkbGUvYWN0aW9ucy9zZXR1cC1ncmFkbGVAdjNcbiAgICAgICAgd2l0aDpcbiAgICAgICAgICBn" >> /tmp/f.b64
+          echo -n "cmFkbGUtdmVyc2lvbjogOC41XG4gICAgICAtIG5hbWU6IFByZXBhcmFyXG4gICAgICAgIHJ1bjogfFxuICAgICAgICAgIGJhc2U2NCAtZCBwcm9qZWN0LnppcC5iNjQgPiBwcm9qZWN0LnppcFxuICAgICAgICAgIHVuemlwIC1vIHByb2plY3QuemlwIC1kIC5cbiAgICAgICAgICBybSBwcm9qZWN0LnppcC5iNjQgcHJvamVjdC56aXBcbiAgICAgIC0gbmFtZTogQ29tcGlsYXJcbiAgICAgICAgcnVuOiBncmFkbGUgYXNzZW1ibGVEZWJ1ZyAtLXN0YWNrdHJhY2VcbiAgICAgIC0gbmFtZTogUmVsZWFzZVxuICAgICAgICB1c2VzOiBzb2Z0cHJvcHMvYWN0aW9uLWdoLXJlbGVhc2VAdjFcbiAgICAgICAgd2l0aDpcbiAgICAgICAgICB0YWdfbmFtZTogc2VuZS12JHt7IGdpdGh1Yi5ydW5fbnVtYmVyIH19XG4gICAgICAgICAgZmlsZXM6IGFwcC9idWlsZC9vdXRwdXRzL2Fway9kZWJ1Zy9hcHAtZGVidWcuYXBrXG4gICAgICAgIGVudjpcbiAgICAgICAgICBHSVRIVUJfVE9LRU46ICR7eyBzZWNyZXRzLkdJVEhVQl9UT0tFTiB9fVxuIjsKICAgIHB1dEZpbGUodG9rZW4sb3duZXIscmVwbywiLmdpdGh1Yi93b3JrZmxvd3MvY29tcGlsYXIueW1sIixCYXNlNjQuZW5jb2RlVG9TdHJpbmcod2YuZ2V0Qnl0ZXMoKSwgQmFzZTY0Lk5PX1dSQVApLCJXb3JrZmxvdyBTRU5FIik7CiAgICBSZXF1ZXN0IGRp" >> /tmp/f.b64
+          echo -n "c3A9bmV3IFJlcXVlc3QuQnVpbGRlcigpLnVybCgiaHR0cHM6Ly9hcGkuZ2l0aHViLmNvbS9yZXBvcy8iK293bmVyKyIvIityZXBvKyIvYWN0aW9ucy93b3JrZmxvd3MvY29tcGlsYXIueW1sL2Rpc3BhdGNoZXMiKS5oZWFkZXIoIkF1dGhvcml6YXRpb24iLCJCZWFyZXIgIit0b2tlbikucG9zdChSZXF1ZXN0Qm9keS5jcmVhdGUoIntcInJlZlwiOlwibWFpblwifSIsTWVkaWFUeXBlLnBhcnNlKCJhcHBsaWNhdGlvbi9qc29uIikpKS5idWlsZCgpOyBjbGllbnQubmV3Q2FsbChkaXNwKS5leGVjdXRlKCk7CiAgICBsb2coIkNvbXBpbGFjaW9uIGluaWNpYWRhIGh0dHBzOi8vZ2l0aHViLmNvbS8iK293bmVyKyIvIityZXBvKyIvYWN0aW9ucyIpOwogIH0KICB2b2lkIHB1dEZpbGUoU3RyaW5nIHRva2VuLFN0cmluZyBvd25lcixTdHJpbmcgcmVwbyxTdHJpbmcgcGF0aCxTdHJpbmcgYjY0LFN0cmluZyBtc2cpIHRocm93cyBFeGNlcHRpb24gewogICAgU3RyaW5nIHVybD0iaHR0cHM6Ly9hcGkuZ2l0aHViLmNvbS9yZXBvcy8iK293bmVyKyIvIityZXBvKyIvY29udGVudHMvIitwYXRoOwogICAgUmVxdWVzdCBnZXQ9bmV3IFJlcXVlc3QuQnVpbGRlcigpLnVybCh1cmwpLmhlYWRlcigiQXV0aG9yaXphdGlvbiIsIkJlYXJlciAiK3Rva2VuKS5nZXQoKS5idWlsZCgpOyBSZXNwb25zZSByZz1jbGll" >> /tmp/f.b64
+          echo -n "bnQubmV3Q2FsbChnZXQpLmV4ZWN1dGUoKTsgU3RyaW5nIHNoYT1udWxsOyBpZihyZy5pc1N1Y2Nlc3NmdWwoKSl7IFN0cmluZyBib2R5PXJnLmJvZHkoKS5zdHJpbmcoKTsgaW50IGk9Ym9keS5pbmRleE9mKCJcInNoYVwiOlwiIik7IGlmKGkhPS0xKXsgaW50IHM9aSs3OyBpbnQgZT1ib2R5LmluZGV4T2YoIlwiIixzKTsgc2hhPWJvZHkuc3Vic3RyaW5nKHMsZSk7IH0gfQogICAgU3RyaW5nIGpzb249InsiKyhzaGEhPW51bGw/Ilwic2hhXCI6XCIiK3NoYSsiXCIsIjoiIikrIlwibWVzc2FnZVwiOlwiIittc2crIlwiLFwiY29udGVudFwiOlwiIitiNjQrIlwiLFwiYnJhbmNoXCI6XCJtYWluXCJ9IjsKICAgIFJlcXVlc3QgcHV0PW5ldyBSZXF1ZXN0LkJ1aWxkZXIoKS51cmwodXJsKS5oZWFkZXIoIkF1dGhvcml6YXRpb24iLCJCZWFyZXIgIit0b2tlbikucHV0KFJlcXVlc3RCb2R5LmNyZWF0ZShqc29uLE1lZGlhVHlwZS5wYXJzZSgiYXBwbGljYXRpb24vanNvbiIpKSkuYnVpbGQoKTsgUmVzcG9uc2UgcnA9Y2xpZW50Lm5ld0NhbGwocHV0KS5leGVjdXRlKCk7IGxvZyhwYXRoKyIgLT4gIitycC5jb2RlKCkpOwogIH0KfQo=" >> /tmp/f.b64
+          base64 -d /tmp/f.b64 > app/src/main/java/com/sene/fabrica/MainActivity.java
+          rm /tmp/f.b64
+      - name: Push
         run: |
           git config user.name "SENE"; git config user.email "sene@fabrica.com"
           git branch -M main
           git add .
-          git commit -m "SENE FINAL V15 icono fix" || true
+          git commit -m "SENE V16 fix yaml valid" || true
           git push origin HEAD:main -f
