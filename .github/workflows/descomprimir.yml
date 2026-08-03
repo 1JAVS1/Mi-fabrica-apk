@@ -8,12 +8,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: |
-          unzip -o FabricaMaestra-Fuente.zip -d .
-          rm FabricaMaestra-Fuente.zip
-          rm -f mi-fabrica-base.zip
+          ls -la
+          for z in *.zip; do unzip -o "$z" -d .; done
+          rm -f *.zip
       - run: |
           git config user.name "fabrica"
           git config user.email "fabrica@bot.com"
           git add .
-          git commit -m "Descomprimido" || true
+          git commit -m "Descomprimido auto" || true
           git push
