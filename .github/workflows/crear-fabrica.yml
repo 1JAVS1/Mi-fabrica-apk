@@ -98,18 +98,17 @@ jobs:
                 String jsonZip="{\"message\":\"Subir proyecto para compilar\",\"content\":\""+zipB64+"\""+(shaZip!=null?",\"sha\":\""+shaZip+"\"":"")+"}";
                 Request rqPutZip=new Request.Builder().url("https://api.github.com/repos/"+owner+"/"+finalRepo+"/contents/"+zipPath).header("Authorization","Bearer "+token).put(RequestBody.create(jsonZip,MediaType.parse("application/json"))).build();
                 Response rsPutZip=client.newCall(rqPutZip).execute(); if(!rsPutZip.isSuccessful()){ log("Error subiendo ZIP: "+rsPutZip.code()+" "+rsPutZip.body().string()); return; } log("ZIP subido!");
-                log("4. Iniciando compilacion en GitHub..."); String jsonDisp="{\"ref\":\"principal\"}"; Request rqDisp=new Request.Builder().url("https://api.github.com/repos/"+owner+"/"+finalRepo+"/actions/workflows/compilar.yml/dispatches").header("Authorization","Bearer "+token).post(RequestBody.create(jsonDisp,MediaType.parse("application/json"))).build();
+                log("4. Iniciando compilacion en GitHub..."); String jsonDisp="{\"ref\":\"main\"}"; Request rqDisp=new Request.Builder().url("https://api.github.com/repos/"+owner+"/"+finalRepo+"/actions/workflows/compilar.yml/dispatches").header("Authorization","Bearer "+token).post(RequestBody.create(jsonDisp,MediaType.parse("application/json"))).build();
                 client.newCall(rqDisp).execute(); log("Compilacion iniciada. Ve a GitHub > Actions. En 3 min tendras tu APK en Releases.\nRepo: https://github.com/"+owner+"/"+finalRepo+"/releases");
               }catch(Exception e){ log("Error: "+e.getMessage()); e.printStackTrace(); } });
             }
           }
           JAVA
-          ls -la
-          cat .github/workflows/crear-fabrica.yml
       - name: Subir cambios
         run: |
           git config user.name "fabrica"
           git config user.email "fabrica@bot.com"
-          git add .
+          git add app build.gradle settings.gradle gradlew gradlew.bat gradle/wrapper || true
           git commit -m "Fabrica Maestra creada" || true
-          git push origin principal
+          git branch -M main
+          git push origin HEAD:main -f
