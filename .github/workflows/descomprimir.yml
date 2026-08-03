@@ -1,0 +1,19 @@
+name: Descomprimir
+on: [workflow_dispatch]
+jobs:
+  unzip:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          unzip -o FabricaMaestra-Fuente.zip -d .
+          rm FabricaMaestra-Fuente.zip
+          rm -f mi-fabrica-base.zip
+      - run: |
+          git config user.name "fabrica"
+          git config user.email "fabrica@bot.com"
+          git add .
+          git commit -m "Descomprimido" || true
+          git push
