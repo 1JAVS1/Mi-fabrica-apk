@@ -12,13 +12,16 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
       - uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: 8.5
       - name: Compilar APK Maestra
-        run: gradle assembleDebug
+        run: gradle assembleDebug --stacktrace
       - name: Subir APK a Releases
+        if: always()
         uses: softprops/action-gh-release@v1
         with:
           tag_name: fabrica-v${{ github.run_number }}
-          name: Fabrica Maestra APK v${{ github.run_number }}
+          name: Fabrica V13 APK v${{ github.run_number }}
           files: app/build/outputs/apk/debug/app-debug.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
