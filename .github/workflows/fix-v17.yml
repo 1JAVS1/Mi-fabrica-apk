@@ -1,0 +1,62 @@
+
+name: Fix SENE V17
+on: [workflow_dispatch]
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Arreglar app/build.gradle linea 2
+        run: |
+          cat > app/build.gradle <<'GRADLE'
+          plugins {
+              id 'com.android.application' version '8.2.2'
+          }
+          android {
+              namespace 'com.sene.fabrica'
+              compileSdk 34
+              defaultConfig {
+                  applicationId "com.sene.fabrica"
+                  minSdk 24
+                  targetSdk 34
+                  versionCode 17
+                  versionName "17.0 SENE FIX"
+              }
+              compileOptions {
+                  sourceCompatibility JavaVersion.VERSION_17
+                  targetCompatibility JavaVersion.VERSION_17
+              }
+          }
+          dependencies {
+              implementation 'com.squareup.okhttp3:okhttp:4.12.0'
+          }
+          GRADLE
+          cat app/build.gradle
+          cat > build.gradle <<'GRADLE'
+          // root empty
+          GRADLE
+          cat > settings.gradle <<'GRADLE'
+          pluginManagement {
+              repositories {
+                  google()
+                  mavenCentral()
+                  gradlePluginPortal()
+              }
+          }
+          dependencyResolutionManagement {
+              repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+              repositories {
+                  google()
+                  mavenCentral()
+              }
+          }
+          include ':app'
+          GRADLE
+      - name: Push fix
+        run: |
+          git config user.name "SENE"; git config user.email "sene@fix.com"
+          git add app/build.gradle build.gradle settings.gradle
+          git commit -m "V17 fix app/build.gradle line2" || true
+          git push origin HEAD:main -f
