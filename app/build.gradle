@@ -1,8 +1,21 @@
-plugins { id 'com.android.application' }
+plugins {
+  id 'com.android.application'
+}
 android {
   namespace 'com.fabrica.maestra'
   compileSdk 34
-  defaultConfig { applicationId "com.fabrica.maestra"; minSdk 24; targetSdk 34; versionCode 2; versionName "2.0 Maestra" }
-  compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
+  defaultConfig {
+    applicationId "com.fabrica.maestra"
+    minSdk 24
+    targetSdk 34
+    versionCode 1
+    versionName "1.0 Maestra"
+  }
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_17
+    targetCompatibility JavaVersion.VERSION_17
+  }
 }
-dependencies { implementation 'com.squareup.okhttp3:okhttp:4.12.0' }
+dependencies {
+  implementation 'com.squareup.okhttp3:okhttp:4.12.0'
+}
